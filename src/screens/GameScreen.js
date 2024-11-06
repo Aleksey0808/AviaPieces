@@ -37,9 +37,9 @@ const GameScreen = ({ route, navigation }) => {
 
   const checkWinCondition = (updatedGrid) => {
     if (updatedGrid.every((item, idx) => item && item.id === puzzle.pieces[idx].id)) {
-      setGameResult('Вы выиграли!');
+      setGameResult(true);
     } else {
-      setGameResult('Вы проиграли!');
+      setGameResult(false);
     }
     setModalVisible(true);
   };
@@ -159,7 +159,7 @@ const GameScreen = ({ route, navigation }) => {
           visible={modalVisible}
           onRestart={restartGame}
           onExit={() => navigation.goBack()}  
-          message={gameResult}
+          result={gameResult}
         />
       </View>
     </ImageBackground>
