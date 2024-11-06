@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, ImageBackground, View, Image, Text, TouchableOpacity, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const GameScreen = ({ route }) => {
+const GameScreen = ({ route, navigation }) => {
   const { puzzle, levelData } = route.params;
   const [selectedPiece, setSelectedPiece] = useState(null);
   const [grid, setGrid] = useState([]);
@@ -10,6 +10,9 @@ const GameScreen = ({ route }) => {
   const [columns, setColumns] = useState(2);
   const [showSolution, setShowSolution] = useState(false); 
   const [defaultImg, setDefaultImg] = useState(require('../../assets/images/elements/easyDef.png')); 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [gameResult, setGameResult] = useState('');
+  console.log(remainingPieces)
 
   useEffect(() => {
     const setupGrid = async () => {
@@ -125,16 +128,18 @@ const GameScreen = ({ route }) => {
       style={styles.bgContainer}
     >
       <View style={styles.container}>
-        <Text style={styles.title}>{puzzle.name}</Text>
-        {renderPuzzleGrid()}
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <Image source={require('../../assets/images/elements/back.png')} style={styles.img} />
+        </TouchableOpacity>
+          {renderPuzzleGrid()}
         <View style={styles.piecesContainer}>
           {renderPuzzlePieces()}
         </View>
-        <TouchableOpacity style={styles.solutionButton} onPress={handleShowSolution}>
-          <Text style={styles.solutionButtonText}>Show solution</Text>
+        <TouchableOpacity style={styles.showButton} onPress={handleShowSolution}>
+          <Image source={require('../../assets/images/elements/show.png')} style={styles.img} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.restartButton} onPress={restartGame}>
-          <Text style={styles.restartButtonText}>reload game</Text>
+        <TouchableOpacity style={styles.resButton} onPress={restartGame}>
+          <Image source={require('../../assets/images/elements/restart.png')} style={styles.img} />
         </TouchableOpacity>
       </View>
     </ImageBackground>
@@ -152,6 +157,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 40,
+  },
+  wrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: 28,
@@ -197,30 +207,26 @@ const styles = StyleSheet.create({
     height: '100%',
     resizeMode: 'cover',
   },
-  solutionButton: {
-    backgroundColor: '#00f',
-    padding: 10,
-    borderRadius: 5,
+  backButton: {
     position: 'absolute',
-    bottom: 20,
-    right: 20,
+    top: '5%',  
+    left: '5%', 
+    zIndex: 1000,
   },
-  solutionButtonText: {
-    color: '#FFF',
-    fontSize: 16,
-  },
-  restartButton: {
-    backgroundColor: '#f00',
-    padding: 10,
-    borderRadius: 5,
+  showButton: {
     position: 'absolute',
-    bottom: 20,
-    left: 20,
+    bottom: '25%',  
+    right: '5%',  
   },
-  restartButtonText: {
-    color: '#FFF',
-    fontSize: 16,
+  resButton: {
+    position: 'absolute',
+    bottom: '25%',  
+    left: '5%',  
   },
+  img: {
+    resizeMode: 'cover', 
+   },
 });
+
 
 export default GameScreen;
