@@ -1,9 +1,16 @@
 import React from 'react';
 import { StyleSheet, ImageBackground, View, Text, TouchableOpacity, Image, Linking } from 'react-native';
 import { useFonts } from '../context/FontContext';
+import { puzzleLevels } from '../helpers/puzzleLevels'
 
 const HomeScreen = ({ navigation }) => {
   const { fontsLoaded } = useFonts();
+
+  const handleLevel = (level) => {
+    selectLevel = puzzleLevels.filter(item => item.level === level)
+    // console.log(selectLevel)
+    navigation.navigate("Select", {selectLevel})
+  }
 
   return (
     <ImageBackground
@@ -18,13 +25,13 @@ const HomeScreen = ({ navigation }) => {
       </View>
       <Image source={require('../../assets/images/logo.png')} style={styles.logo} />
       <Image source={require('../../assets/images/elements/line.png')} style={styles.line} />
-      <TouchableOpacity style={styles.easy}>
+      <TouchableOpacity onPress={() => handleLevel('easy')} style={styles.easy}>
         <Image source={require('../../assets/images/elements/easy.png')} style={styles.img} />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.normal}>
+      <TouchableOpacity onPress={() => handleLevel('normal')} style={styles.normal}>
         <Image source={require('../../assets/images/elements/normal.png')} style={styles.img} />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.hard}>
+      <TouchableOpacity onPress={() => handleLevel('hard')} style={styles.hard}>
         <Image source={require('../../assets/images/elements/hard.png')} style={styles.img} />
       </TouchableOpacity>  
       <View style={styles.wrapperButton}>
@@ -66,12 +73,14 @@ const styles = StyleSheet.create({
   top: '55%',  
   left: '35%', 
   resizeMode: 'cover', 
+  zIndex: 1000,
  },
  hard: {
   position: 'absolute',
   bottom: '15%',  
   right: 20, 
   resizeMode: 'cover', 
+  zIndex: 1000,
  },
  img: {
   resizeMode: 'cover', 
