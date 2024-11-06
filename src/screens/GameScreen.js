@@ -1,42 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ImageBackground, View, Image, Text, TouchableOpacity, FlatList } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StyleSheet, ImageBackground, View, Image, TouchableOpacity, FlatList } from 'react-native';
+import PuzzleModal from '../components/PuzzleModal';
 
 const GameScreen = ({ route, navigation }) => {
   const { puzzle, levelData } = route.params;
   const [selectedPiece, setSelectedPiece] = useState(null);
   const [grid, setGrid] = useState([]);
-  const [remainingPieces, setRemainingPieces] = useState(puzzle.pieces);
+  const [remainingPieces, setRemainingPieces] = useState([]);
   const [columns, setColumns] = useState(2);
-  const [showSolution, setShowSolution] = useState(false); 
-  const [defaultImg, setDefaultImg] = useState(require('../../assets/images/elements/easyDef.png')); 
+  const [showSolution, setShowSolution] = useState(false);
+  const [defaultImg, setDefaultImg] = useState(require('../../assets/images/elements/easyDef.png'));
   const [modalVisible, setModalVisible] = useState(false);
   const [gameResult, setGameResult] = useState('');
-  console.log(remainingPieces)
 
   useEffect(() => {
-    const setupGrid = async () => {
-      const savedGrid = await AsyncStorage.getItem(`savedGrid_${levelData.level}`);
-      if (savedGrid) {
-        setGrid(JSON.parse(savedGrid));
-      } else {
-        const emptyGrid = Array(puzzle.pieces.length).fill(null);
-        setGrid(emptyGrid);
-      }
-    };
-    
     if (levelData.level === 'easy') {
       setColumns(2);
-      setDefaultImg(require('../../assets/images/elements/easyDef.png'))
+      setDefaultImg(require('../../assets/images/elements/easyDef.png'));
     } else if (levelData.level === 'normal') {
       setColumns(3);
-      setDefaultImg(require('../../assets/images/elements/normalDef.png'))
+      setDefaultImg(require('../../assets/images/elements/normalDef.png'));
     } else if (levelData.level === 'hard') {
       setColumns(4);
-      setDefaultImg(require('../../assets/images/elements/hardDef.png'))
+      setDefaultImg(require('../../assets/images/elements/hardDef.png'));
     }
-    
-    setupGrid();
+
+    const emptyGrid = Array(puzzle.pieces.length).fill(null);
+    setGrid(emptyGrid);
+    setRemainingPieces(puzzle.pieces);
     
     setShowSolution(true);
     setTimeout(() => {
@@ -44,8 +35,13 @@ const GameScreen = ({ route, navigation }) => {
     }, 3000);
   }, [puzzle, levelData.level]);
 
-  const saveGameState = async (newGrid) => {
-    await AsyncStorage.setItem(`savedGrid_${levelData.level}`, JSON.stringify(newGrid));
+  const checkWinCondition = (updatedGrid) => {
+    if (updatedGrid.every((item, idx) => item && item.id === puzzle.pieces[idx].id)) {
+      setGameResult('Вы выиграли!');
+    } else {
+      setGameResult('Вы проиграли!');
+    }
+    setModalVisible(true);
   };
 
   const handlePieceSelect = (piece) => {
@@ -58,11 +54,17 @@ const GameScreen = ({ route, navigation }) => {
       newGrid[index] = selectedPiece;
       setGrid(newGrid);
 
-      const newRemainingPieces = remainingPieces.filter(piece => piece.id !== selectedPiece.id);
-      setRemainingPieces(newRemainingPieces);
-      setSelectedPiece(null);
+      const pieceIndex = remainingPieces.findIndex(piece => piece.id === selectedPiece.id);
+      if (pieceIndex !== -1) {
+        const updatedRemainingPieces = [...remainingPieces];
+        updatedRemainingPieces.splice(pieceIndex, 1);
+        setRemainingPieces(updatedRemainingPieces);
 
-      saveGameState(newGrid); 
+        if (updatedRemainingPieces.length === 0) {
+          checkWinCondition(newGrid);
+        }
+      }
+      setSelectedPiece(null);
     }
   };
 
@@ -71,7 +73,12 @@ const GameScreen = ({ route, navigation }) => {
     setGrid(emptyGrid);
     setRemainingPieces(puzzle.pieces);
     setSelectedPiece(null);
-    AsyncStorage.removeItem(`savedGrid_${levelData.level}`);
+    setModalVisible(false);
+
+    setShowSolution(true);
+    setTimeout(() => {
+      setShowSolution(false);
+    }, 3000);
   };
 
   const renderPuzzlePieces = () => (
@@ -131,16 +138,29 @@ const GameScreen = ({ route, navigation }) => {
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Image source={require('../../assets/images/elements/back.png')} style={styles.img} />
         </TouchableOpacity>
+        
+        <View style={styles.puzzleContainer}>
           {renderPuzzleGrid()}
+        </View>
+        
         <View style={styles.piecesContainer}>
           {renderPuzzlePieces()}
         </View>
+        
         <TouchableOpacity style={styles.showButton} onPress={handleShowSolution}>
           <Image source={require('../../assets/images/elements/show.png')} style={styles.img} />
         </TouchableOpacity>
+        
         <TouchableOpacity style={styles.resButton} onPress={restartGame}>
           <Image source={require('../../assets/images/elements/restart.png')} style={styles.img} />
         </TouchableOpacity>
+        
+        <PuzzleModal 
+          visible={modalVisible}
+          onRestart={restartGame}
+          onExit={() => navigation.goBack()}  
+          message={gameResult}
+        />
       </View>
     </ImageBackground>
   );
@@ -158,15 +178,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 40,
   },
-  wrapper: {
-    flex: 1,
+  puzzleContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  title: {
-    fontSize: 28,
-    color: '#FFF',
-    marginBottom: 20,
+    flex: 1,
+    marginTop: 40,  
   },
   piecesContainer: {
     flexDirection: 'row',
@@ -225,8 +241,7 @@ const styles = StyleSheet.create({
   },
   img: {
     resizeMode: 'cover', 
-   },
+  },
 });
-
 
 export default GameScreen;
