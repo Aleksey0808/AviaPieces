@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, ImageBackground, View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
 import { useFonts } from '../context/FontContext';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -6,9 +6,20 @@ import { LinearGradient } from 'expo-linear-gradient';
 const SelectPuzzleScreen = ({ navigation, route }) => {
   const { fontsLoaded } = useFonts();
   const { selectLevel } = route.params;
+  const [numImg, setNumImg] = useState(require('../../assets/images/elements/4.png'));
   
   const levelData = selectLevel[0]; 
   const puzzles = levelData.puzzles || []; 
+
+  useEffect(() => {
+    console.log(levelData.level)
+   if (levelData.level === 'easy') {
+   return setNumImg(require('../../assets/images/elements/4.png'))
+   } else if (levelData.level === 'normal') {
+   return setNumImg(require('../../assets/images/elements/9.png'))
+   }
+   return setNumImg(require('../../assets/images/elements/16.png'))
+  }, [levelData.level]);
 
   const handlePuzzleSelect = (puzzle) => {
     navigation.navigate('Game', { puzzle, levelData });
@@ -35,14 +46,15 @@ const SelectPuzzleScreen = ({ navigation, route }) => {
           contentContainerStyle={styles.listContent}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => handlePuzzleSelect(item)} style={styles.puzzleItem}>
-                <LinearGradient
+                {/* <LinearGradient
                   colors={['rgba(122, 115, 105, 0.2)', 'rgba(234, 196, 139, 0.2)', 'rgba(122, 105, 105, 0.2)']}
                   start={{ x: 0.5, y: 0 }}
                   end={{ x: 0.5, y: 1 }}
                   style={styles.gradientBorder}
-                >
+                > */}
+              <Image source={numImg} style={styles.circle} />
               <Image source={item.image} style={styles.puzzleImage} />
-              </LinearGradient>
+              {/* </LinearGradient> */}
             </TouchableOpacity>
           )}
         />
@@ -96,9 +108,16 @@ const styles = StyleSheet.create({
   puzzleImage: {
     resizeMode: 'cover', 
   },
+  circle: {
+    position: 'absolute',
+    top: '0%',  
+    right: '0%', 
+    resizeMode: 'cover', 
+    zIndex: 1000,
+  },
   backButton: {
     position: 'absolute',
-    top: '5%',  
+    top: '7%',  
     left: '5%', 
     zIndex: 1000,
   },
