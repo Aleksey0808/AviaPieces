@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ImageBackground, View, Image, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, ImageBackground, View, Image, TouchableOpacity, FlatList, Dimensions } from 'react-native';
 import PuzzleModal from '../components/PuzzleModal';
+import { Audio } from 'expo-av';
+const width = Dimensions.get('window').width;
 
 const GameScreen = ({ route, navigation }) => {
+ 
   const { puzzle, levelData } = route.params;
   const [selectedPiece, setSelectedPiece] = useState(null);
   const [grid, setGrid] = useState([]);
@@ -12,7 +15,49 @@ const GameScreen = ({ route, navigation }) => {
   const [defaultImg, setDefaultImg] = useState(require('../../assets/images/elements/easyDef.png'));
   const [modalVisible, setModalVisible] = useState(false);
   const [gameResult, setGameResult] = useState('');
+  const [sound, setSound] = useState();
+  const [isPlaying, setIsPlaying] = useState(false);
 
+  const playMusic = async () => {
+    const { sound } = await Audio.Sound.createAsync(
+      require('../../assets/music/funny-bgm-240795.mp3') 
+    );
+    setSound(sound);
+    await sound.playAsync(); 
+    setIsPlaying(true);
+  };
+
+  const stopMusic = async () => {
+    if (sound) {
+      await sound.stopAsync(); 
+      setIsPlaying(false);
+    }
+  };
+
+  useEffect(() => {
+    return sound
+      ? () => {
+          sound.unloadAsync(); 
+        }
+      : undefined;
+  }, [sound]);
+
+  const handleMusicPress = () => {
+    if (isPlaying) {
+      stopMusic(); 
+    } else {
+      playMusic();
+    }
+  };
+
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+  
   useEffect(() => {
     if (levelData.level === 'easy') {
       setColumns(2);
@@ -27,7 +72,8 @@ const GameScreen = ({ route, navigation }) => {
 
     const emptyGrid = Array(puzzle.pieces.length).fill(null);
     setGrid(emptyGrid);
-    setRemainingPieces(puzzle.pieces);
+    const shuffledPieces = shuffleArray([...puzzle.pieces]);
+    setRemainingPieces(shuffledPieces);
     
     setShowSolution(true);
     setTimeout(() => {
@@ -137,7 +183,10 @@ const GameScreen = ({ route, navigation }) => {
       <View style={styles.container}>
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Image source={require('../../assets/images/elements/back.png')} style={styles.img} />
-        </TouchableOpacity>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.music} onPress={handleMusicPress}>
+          <Image source={require('../../assets/images/elements/music.png')} style={styles.img} />
+      </TouchableOpacity>
         
         <View style={styles.puzzleContainer}>
           {renderPuzzleGrid()}
@@ -148,7 +197,12 @@ const GameScreen = ({ route, navigation }) => {
         </View>
         
         <TouchableOpacity style={styles.showButton} onPress={handleShowSolution}>
-          <Image source={require('../../assets/images/elements/show.png')} style={styles.img} />
+          {showSolution ? 
+           <Image source={require('../../assets/images/elements/showOn.png')} style={styles.img} />
+           :
+           <Image source={require('../../assets/images/elements/show.png')} style={styles.img} />
+          }
+         
         </TouchableOpacity>
         
         <TouchableOpacity style={styles.resButton} onPress={restartGame}>
@@ -205,6 +259,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   gridContainer: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -227,6 +282,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '5%',  
     left: '5%', 
+    zIndex: 1000,
+  },
+  music: {
+    position: 'absolute',
+    top: '5%',  
+    right: '5%', 
     zIndex: 1000,
   },
   showButton: {

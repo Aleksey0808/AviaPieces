@@ -51,7 +51,7 @@ export const puzzleLevels = [
       puzzles: [
         {
           id: 1,
-          image: require('../../assets/images/puzzle/normal/Prop=01.png'),
+          image: require('../../assets/images/puzzle/normal/Prop=01.jpg'),
           pieces: [
             { id: 1, image: require('../../assets/images/puzzle/normal/1/Prop=01.jpg') },
             { id: 2, image: require('../../assets/images/puzzle/normal/1/Prop=02.jpg') },
@@ -66,7 +66,7 @@ export const puzzleLevels = [
         },
         {
             id: 2,
-            image: require('../../assets/images/puzzle/normal/Prop=02.png'),
+            image: require('../../assets/images/puzzle/normal/Prop=02.jpg'),
             pieces: [
               { id: 1, image: require('../../assets/images/puzzle/normal/2/Prop=01.jpg') },
               { id: 2, image: require('../../assets/images/puzzle/normal/2/Prop=02.jpg') },
@@ -81,7 +81,7 @@ export const puzzleLevels = [
           },
           {
             id: 3,
-            image: require('../../assets/images/puzzle/normal/Prop=03.png'),
+            image: require('../../assets/images/puzzle/normal/Prop=03.jpg'),
             pieces: [
               { id: 1, image: require('../../assets/images/puzzle/normal/3/Prop=01.jpg') },
               { id: 2, image: require('../../assets/images/puzzle/normal/3/Prop=02.jpg') },
@@ -96,7 +96,7 @@ export const puzzleLevels = [
           },
           {
             id: 4,
-            image: require('../../assets/images/puzzle/normal/Prop=04.png'),
+            image: require('../../assets/images/puzzle/normal/Prop=04.jpg'),
             pieces: [
               { id: 1, image: require('../../assets/images/puzzle/normal/4/Prop=01.jpg') },
               { id: 2, image: require('../../assets/images/puzzle/normal/4/Prop=02.jpg') },
