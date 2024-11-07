@@ -12,7 +12,6 @@ const SelectPuzzleScreen = ({ navigation, route }) => {
   const puzzles = levelData.puzzles || []; 
 
   useEffect(() => {
-    console.log(levelData.level)
    if (levelData.level === 'easy') {
    return setNumImg(require('../../assets/images/elements/4.png'))
    } else if (levelData.level === 'normal') {

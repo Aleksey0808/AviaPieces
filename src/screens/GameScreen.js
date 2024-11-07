@@ -133,7 +133,10 @@ const GameScreen = ({ route, navigation }) => {
       keyExtractor={(item, index) => `${index}-${levelData.level}-${new Date().getTime()}`}
       renderItem={({ item }) => (
         <TouchableOpacity onPress={() => handlePieceSelect(item)}>
-          <Image source={item.image} style={styles.pieceImage} />
+          <Image source={item.image} style={[
+            styles.pieceImage,
+            selectedPiece && selectedPiece.id === item.id && styles.selectedPieceImage,
+          ]} />
         </TouchableOpacity>
       )}
       contentContainerStyle={styles.pieceList}
@@ -256,6 +259,11 @@ const styles = StyleSheet.create({
     height: 80,
     resizeMode: 'cover',
     margin: 10,
+  },
+  selectedPieceImage: {
+    borderColor: '#F3BC00',  
+    borderWidth: 4,  
+    borderRadius: 8,
   },
   pieceList: {
     flexDirection: 'row',
