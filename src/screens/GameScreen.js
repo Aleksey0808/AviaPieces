@@ -5,7 +5,6 @@ import { Audio } from 'expo-av';
 const width = Dimensions.get('window').width;
 
 const GameScreen = ({ route, navigation }) => {
- 
   const { puzzle, levelData } = route.params;
   const [selectedPiece, setSelectedPiece] = useState(null);
   const [grid, setGrid] = useState([]);
@@ -40,7 +39,7 @@ const GameScreen = ({ route, navigation }) => {
           sound.unloadAsync(); 
         }
       : undefined;
-  }, [sound]);
+  }, []);
 
   const handleMusicPress = () => {
     if (isPlaying) {
@@ -134,7 +133,10 @@ const GameScreen = ({ route, navigation }) => {
       keyExtractor={(item, index) => `${index}-${levelData.level}-${new Date().getTime()}`}
       renderItem={({ item }) => (
         <TouchableOpacity onPress={() => handlePieceSelect(item)}>
-          <Image source={item.image} style={styles.pieceImage} />
+          <Image source={item.image} style={[
+            styles.pieceImage,
+            selectedPiece && selectedPiece.id === item.id && styles.selectedPieceImage,
+          ]} />
         </TouchableOpacity>
       )}
       contentContainerStyle={styles.pieceList}
@@ -144,7 +146,7 @@ const GameScreen = ({ route, navigation }) => {
   const renderPuzzleGrid = () => {
     const renderItem = ({ item, index }) => (
       <TouchableOpacity
-        style={styles.gridCell}
+        style={[styles.gridCell, { width: width / columns - 10, height: width / columns - 10 }]} 
         onPress={() => handleGridCellPress(index)}
       >
         {item || showSolution ? (
@@ -161,7 +163,7 @@ const GameScreen = ({ route, navigation }) => {
         numColumns={columns}
         renderItem={renderItem}
         keyExtractor={(item, index) => `${index}-${columns}-${levelData.level}`}
-        style={styles.grid}
+        style={[styles.grid, {width: width * 1.1,}]}
         contentContainerStyle={styles.gridContainer}
         key={`${columns}-${levelData.level}`} 
       />
@@ -181,11 +183,19 @@ const GameScreen = ({ route, navigation }) => {
       style={styles.bgContainer}
     >
       <View style={styles.container}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <TouchableOpacity style={styles.backButton} onPress={() => {
+          navigation.goBack()
+          stopMusic()
+        }}>
           <Image source={require('../../assets/images/elements/back.png')} style={styles.img} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.music} onPress={handleMusicPress}>
+        {isPlaying ? 
+          <Image source={require('../../assets/images/elements/musicOn.png')} style={styles.img} />
+          :
           <Image source={require('../../assets/images/elements/music.png')} style={styles.img} />
+        }
+          
       </TouchableOpacity>
         
         <View style={styles.puzzleContainer}>
@@ -250,6 +260,11 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     margin: 10,
   },
+  selectedPieceImage: {
+    borderColor: '#F3BC00',  
+    borderWidth: 4,  
+    borderRadius: 8,
+  },
   pieceList: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -280,13 +295,13 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    top: '5%',  
+    top: '7%',  
     left: '5%', 
     zIndex: 1000,
   },
   music: {
     position: 'absolute',
-    top: '5%',  
+    top: '7%',  
     right: '5%', 
     zIndex: 1000,
   },
@@ -301,6 +316,8 @@ const styles = StyleSheet.create({
     left: '5%',  
   },
   img: {
+    width: 45,
+    height: 45,
     resizeMode: 'cover', 
   },
 });

@@ -35,7 +35,7 @@ const HomeScreen = ({ navigation }) => {
         <Image source={require('../../assets/images/elements/hard.png')} style={styles.img} />
       </TouchableOpacity>  
       <View style={styles.wrapperButton}>
-         <TouchableOpacity style={styles.button} onPress={() => Linking.openURL('https://racketstep.click/alviacloud-policy')}>
+         <TouchableOpacity style={styles.button} onPress={() => Linking.openURL('https://ringplay.xyz/aviapieces-policy')}>
           <Text style={[styles.buttonText, { fontFamily: fontsLoaded ? 'Lilita-One' : 'System' }]}>Privacy Policy</Text>
       </TouchableOpacity>
       </View>
