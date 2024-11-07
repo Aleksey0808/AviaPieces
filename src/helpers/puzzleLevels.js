@@ -7,40 +7,40 @@ export const puzzleLevels = [
           id: 1,
           image: require('../../assets/images/puzzle/easy/Prop=01.png'),
           pieces: [
-            { id: 1, image: require('../../assets/images/puzzle/easy/1/1.jpg') },
-            { id: 2, image: require('../../assets/images/puzzle/easy/1/2.jpg') },
-            { id: 3, image: require('../../assets/images/puzzle/easy/1/3.jpg') },
-            { id: 4, image: require('../../assets/images/puzzle/easy/1/4.jpg') },
+            { id: 1, image: require('../../assets/images/puzzle/easy/1/Prop=01.jpg') },
+            { id: 2, image: require('../../assets/images/puzzle/easy/1/Prop=02.jpg') },
+            { id: 3, image: require('../../assets/images/puzzle/easy/1/Prop=03.jpg') },
+            { id: 4, image: require('../../assets/images/puzzle/easy/1/Prop=04.jpg') },
           ],
         },
         {
           id: 2,
           image: require('../../assets/images/puzzle/easy/Prop=02.png'),
           pieces: [
-            { id: 1, image: require('../../assets/images/puzzle/easy/2/1.jpg') },
-            { id: 2, image: require('../../assets/images/puzzle/easy/2/2.jpg') },
-            { id: 3, image: require('../../assets/images/puzzle/easy/2/3.jpg') },
-            { id: 4, image: require('../../assets/images/puzzle/easy/2/4.jpg') },
+            { id: 1, image: require('../../assets/images/puzzle/easy/2/Prop=01.jpg') },
+            { id: 2, image: require('../../assets/images/puzzle/easy/2/Prop=02.jpg') },
+            { id: 3, image: require('../../assets/images/puzzle/easy/2/Prop=03.jpg') },
+            { id: 4, image: require('../../assets/images/puzzle/easy/2/Prop=04.jpg') },
           ],
         },
         {
           id: 3,
           image: require('../../assets/images/puzzle/easy/Prop=03.png'),
           pieces: [
-            { id: 1, image: require('../../assets/images/puzzle/easy/3/1.jpg') },
-            { id: 2, image: require('../../assets/images/puzzle/easy/3/2.jpg') },
-            { id: 3, image: require('../../assets/images/puzzle/easy/3/3.jpg') },
-            { id: 4, image: require('../../assets/images/puzzle/easy/3/4.jpg') },
+            { id: 1, image: require('../../assets/images/puzzle/easy/3/Prop=01.jpg') },
+            { id: 2, image: require('../../assets/images/puzzle/easy/3/Prop=02.jpg') },
+            { id: 3, image: require('../../assets/images/puzzle/easy/3/Prop=03.jpg') },
+            { id: 4, image: require('../../assets/images/puzzle/easy/3/Prop=04.jpg') },
           ],
         },
         {
           id: 4,
           image: require('../../assets/images/puzzle/easy/Prop=04.png'),
           pieces: [
-            { id: 1, image: require('../../assets/images/puzzle/easy/4/1.jpg') },
-            { id: 2, image: require('../../assets/images/puzzle/easy/4/2.jpg') },
-            { id: 3, image: require('../../assets/images/puzzle/easy/4/3.jpg') },
-            { id: 4, image: require('../../assets/images/puzzle/easy/4/4.jpg') },
+            { id: 1, image: require('../../assets/images/puzzle/easy/4/Prop=01.jpg') },
+            { id: 2, image: require('../../assets/images/puzzle/easy/4/Prop=02.jpg') },
+            { id: 3, image: require('../../assets/images/puzzle/easy/4/Prop=03.jpg') },
+            { id: 4, image: require('../../assets/images/puzzle/easy/4/Prop=04.jpg') },
           ],
         },
       ],
@@ -51,7 +51,7 @@ export const puzzleLevels = [
       puzzles: [
         {
           id: 1,
-          image: require('../../assets/images/puzzle/normal/Prop=01.png'),
+          image: require('../../assets/images/puzzle/normal/Prop=01.jpg'),
           pieces: [
             { id: 1, image: require('../../assets/images/puzzle/normal/1/Prop=01.jpg') },
             { id: 2, image: require('../../assets/images/puzzle/normal/1/Prop=02.jpg') },
@@ -66,7 +66,7 @@ export const puzzleLevels = [
         },
         {
             id: 2,
-            image: require('../../assets/images/puzzle/normal/Prop=02.png'),
+            image: require('../../assets/images/puzzle/normal/Prop=02.jpg'),
             pieces: [
               { id: 1, image: require('../../assets/images/puzzle/normal/2/Prop=01.jpg') },
               { id: 2, image: require('../../assets/images/puzzle/normal/2/Prop=02.jpg') },
@@ -81,7 +81,7 @@ export const puzzleLevels = [
           },
           {
             id: 3,
-            image: require('../../assets/images/puzzle/normal/Prop=03.png'),
+            image: require('../../assets/images/puzzle/normal/Prop=03.jpg'),
             pieces: [
               { id: 1, image: require('../../assets/images/puzzle/normal/3/Prop=01.jpg') },
               { id: 2, image: require('../../assets/images/puzzle/normal/3/Prop=02.jpg') },
@@ -96,7 +96,7 @@ export const puzzleLevels = [
           },
           {
             id: 4,
-            image: require('../../assets/images/puzzle/normal/Prop=04.png'),
+            image: require('../../assets/images/puzzle/normal/Prop=04.jpg'),
             pieces: [
               { id: 1, image: require('../../assets/images/puzzle/normal/4/Prop=01.jpg') },
               { id: 2, image: require('../../assets/images/puzzle/normal/4/Prop=02.jpg') },

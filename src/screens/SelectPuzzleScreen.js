@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, ImageBackground, View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
 import { useFonts } from '../context/FontContext';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const SelectPuzzleScreen = ({ navigation, route }) => {
   const { fontsLoaded } = useFonts();
@@ -19,9 +20,14 @@ const SelectPuzzleScreen = ({ navigation, route }) => {
       style={styles.bgContainer}
     >
       <View style={styles.container}>
-        <Text style={[styles.title, { fontFamily: fontsLoaded ? 'Lilita-One' : 'System' }]}>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+            <Image source={require('../../assets/images/elements/back.png')} style={styles.img} />
+        </TouchableOpacity>
+        <View style={styles.wrappe}>
+          <Text style={[styles.title, { fontFamily: fontsLoaded ? 'Lilita-One' : 'System' }]}>
           {levelData.level}
         </Text>
+        </View>
         <FlatList
           data={puzzles}
           numColumns={2}
@@ -29,7 +35,14 @@ const SelectPuzzleScreen = ({ navigation, route }) => {
           contentContainerStyle={styles.listContent}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => handlePuzzleSelect(item)} style={styles.puzzleItem}>
+                <LinearGradient
+                  colors={['rgba(122, 115, 105, 0.2)', 'rgba(234, 196, 139, 0.2)', 'rgba(122, 105, 105, 0.2)']}
+                  start={{ x: 0.5, y: 0 }}
+                  end={{ x: 0.5, y: 1 }}
+                  style={styles.gradientBorder}
+                >
               <Image source={item.image} style={styles.puzzleImage} />
+              </LinearGradient>
             </TouchableOpacity>
           )}
         />
@@ -52,29 +65,44 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     // alignItems: 'center',
   },
+  wrapperTitle: {
+    marginTop: 150,
+    alignItems: 'center',
+  },
   title: {
-    fontSize: 28,
+    fontSize: 30,
     color: '#FFF',
-    marginBottom: 30,
+    marginTop: 30,
     textAlign: 'center',
+    // textTransform: 'uppercase',
   },
   listContent: {
+    flex: 1,
     paddingHorizontal: 10,
     paddingBottom: 20,
     justifyContent: 'center',
   },
   puzzleItem: {
-    flex: 1,
-    alignItems: 'center',
+    width: 160, 
+    height: 130, 
     margin: 10,
-    padding: 10,
-    borderRadius: 12,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  gradientBorder: {
+    padding: 8, 
+    borderRadius: 8, 
   },
   puzzleImage: {
-    width: 160,
-    height: 160,
-    borderRadius: 10,
-    resizeMode: 'cover',
+    resizeMode: 'cover', 
+  },
+  backButton: {
+    position: 'absolute',
+    top: '5%',  
+    left: '5%', 
+    zIndex: 1000,
+  },
+  img: {
+    resizeMode: 'cover', 
   },
 });
