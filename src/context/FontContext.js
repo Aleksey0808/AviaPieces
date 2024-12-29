@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
+// import { useFonts } from 'expo-font';
 
 const FontContext = createContext();
 
@@ -11,7 +12,7 @@ export const FontProvider = ({ children }) => {
   useEffect(() => {
     const loadFonts = async () => {
       await Font.loadAsync({
-        'Lilita-One': require('../../assets/fonts/LilitaOne-Regular.ttf'), 
+        'Lilita-One': { uri: 'https://fonts.gstatic.com/s/lilitaone/v10/nKKT-GQ0F5dSY8vzG0rOEw2xW1Q.ttf' },
       });
       setFontsLoaded(true);
       await SplashScreen.hideAsync(); 
